@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
+import { Truck as TruckIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import HeroSection from '../components/HeroSection';
 import { useProducts } from '../hooks/useSupabase';
@@ -6,7 +7,7 @@ import Header from '../components/Header';
 import SiteFooter from '../components/SiteFooter';
 import Logo from '../components/logo.png';
 import { Facebook, Instagram, Drumstick, Flame, FlaskConical, Zap, Star, Lock, Leaf, Truck } from 'lucide-react';
-
+import My from '../components/my.jpg'
 // صورة بديلة عامة عند فشل التحميل من رابط مباشر ثابت
 const FALLBACK_IMG = 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=800&auto=format&fit=crop';
 // صورة افتراضية مباشرة لمنتجات البرجر إذا لم تتوفر صورة من البيانات
@@ -48,6 +49,31 @@ const Home: React.FC = () => {
 
   // عرض أفضل 3 منتجات
   const featuredBurgers = burgers?.filter(burger => burger.is_popular).slice(0, 3) || [];
+  // عروض: المنتجات التي لديها سعر أصلي أعلى من السعر الحالي
+  const offerBurgers = (burgers || []).filter((b: any) => (
+    (typeof b.original_beef_price === 'number' && b.original_beef_price > (b.beef_price ?? Infinity)) ||
+    (typeof b.original_chicken_price === 'number' && b.original_chicken_price > (b.chicken_price ?? Infinity))
+  )).slice(0, 6);
+
+  // فلتر العرض: الكل / بقري / دجاج
+  const [offerFilter, setOfferFilter] = useState<'all' | 'beef' | 'chicken'>('all');
+  const filteredOffers = useMemo(() => {
+    if (offerFilter === 'beef') {
+      return offerBurgers.filter((b: any) => typeof b.original_beef_price === 'number' && typeof b.beef_price === 'number' && b.original_beef_price > b.beef_price);
+    }
+    if (offerFilter === 'chicken') {
+      return offerBurgers.filter((b: any) => typeof b.original_chicken_price === 'number' && typeof b.chicken_price === 'number' && b.original_chicken_price > b.chicken_price);
+    }
+    return offerBurgers;
+  }, [offerBurgers, offerFilter]);
+
+  // عد تنازلي حتى نهاية اليوم
+  const now = new Date();
+  const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
+  const remainingMs = Math.max(0, endOfDay.getTime() - now.getTime());
+  const remainingHours = Math.floor(remainingMs / (1000 * 60 * 60));
+  const remainingMinutes = Math.floor((remainingMs % (1000 * 60 * 60)) / (1000 * 60));
+  const isMonday = new Date().getDay() === 1; // 1 = Monday
   // اقتراح الأفضل: أولوية للأكثر شعبية ثم الأعلى تقييماً ثم الأعلى سعراً (إن توفرت الحقول)
   const recommendedBurgers = (
     ((burgers as any[]) || []).slice().sort((a, b) => {
@@ -85,7 +111,7 @@ const Home: React.FC = () => {
 
   // آراء العملاء (Testimonials)
   const testimonials = [
-    { name: 'أحمد', role: 'عميل دائم', rating: 5, text: 'أفضل برجر ذقته! النكهة متوازنة واللحم طازج جدًا.', avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=300&auto=format&fit=crop' },
+    { name: 'مجاهد', role: 'عميل دائم', rating: 5, text: 'أفضل برجر ذقته! النكهة متوازنة واللحم طازج جدًا.', avatar: My },
     { name: 'سارة', role: 'Food blogger', rating: 5, text: 'التجربة رائعة من البداية للنهاية. عرض وتغليف ممتاز.', avatar: 'https://images.unsplash.com/photo-1544005314-0a7f8eaaae1d?q=80&w=300&auto=format&fit=crop' },
     { name: 'محمد', role: 'زبون جديد', rating: 4, text: 'السعر مناسب والجودة ممتازة. سأكرر الطلب بالتأكيد.', avatar: 'https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?q=80&w=300&auto=format&fit=crop' },
   ];
@@ -133,6 +159,134 @@ const Home: React.FC = () => {
               ))}
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Offers Section */}
+      <section id="offers" className="py-16 bg-white border-t border-gray-100">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-8">
+            <h2 className="font-display text-4xl font-extrabold text-gray-900 mb-2">عروض اليوم</h2>
+            <p className="text-gray-600">خصومات حقيقية على أشهر أصنافنا • ينتهي خلال {remainingHours}س {remainingMinutes}د</p>
+          </div>
+
+          {/* Monday Free Delivery Promo */}
+          <div className="mb-8">
+            <div className="relative overflow-hidden rounded-2xl border border-green-200 bg-gradient-to-r from-green-50 to-emerald-50 p-4 md:p-5">
+              <div className="flex items-center gap-3">
+                <div className="shrink-0 w-10 h-10 rounded-xl bg-white text-green-600 flex items-center justify-center shadow">
+                  <TruckIcon className="w-6 h-6" aria-hidden="true" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-display text-xl font-extrabold text-green-900 mb-1">توصيل مجاني كل يوم اثنين</h3>
+                  <p className="text-sm text-green-800/90">اطلب برجرَك المفضل يوم الاثنين واستمتع بتوصيل مجاني داخل بورتسودان.</p>
+                </div>
+                <div className="self-start">
+                  <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${isMonday ? 'bg-green-600 text-white' : 'bg-green-100 text-green-700 border border-green-200'}`}>
+                    {isMonday ? 'نشط اليوم' : 'خاص بيوم الاثنين'}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* فلاتر بسيطة */}
+          <div className="flex items-center justify-center gap-2 mb-8">
+            {[
+              { key: 'all', label: 'كل العروض' },
+              { key: 'beef', label: 'لحم بقري' },
+              { key: 'chicken', label: 'دجاج' },
+            ].map((f: any) => (
+              <button
+                key={f.key}
+                onClick={() => setOfferFilter(f.key)}
+                className={`px-3 py-1.5 rounded-full text-sm border transition ${
+                  offerFilter === f.key
+                    ? 'bg-red-600 text-white border-red-600'
+                    : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50'
+                }`}
+                aria-pressed={offerFilter === f.key}
+              >
+                {f.label}
+              </button>
+            ))}
+          </div>
+
+          {loading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <div key={i} className="animate-pulse bg-white rounded-2xl border border-gray-100 overflow-hidden">
+                  <div className="h-56 bg-gray-200" />
+                  <div className="p-4 space-y-3">
+                    <div className="h-5 bg-gray-200 rounded w-1/2" />
+                    <div className="h-4 bg-gray-200 rounded w-5/6" />
+                    <div className="h-4 bg-gray-200 rounded w-2/3" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : filteredOffers.length === 0 ? (
+            <div className="text-center text-gray-500">لا توجد عروض حالياً، تابعنا لمعرفة أحدث التخفيضات.</div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredOffers.map((item: any) => {
+                const beefDiscount = (typeof item.original_beef_price === 'number' && typeof item.beef_price === 'number' && item.original_beef_price > item.beef_price)
+                  ? Math.round(((item.original_beef_price - item.beef_price) / item.original_beef_price) * 100)
+                  : 0;
+                const chickenDiscount = (typeof item.original_chicken_price === 'number' && typeof item.chicken_price === 'number' && item.original_chicken_price > item.chicken_price)
+                  ? Math.round(((item.original_chicken_price - item.chicken_price) / item.original_chicken_price) * 100)
+                  : 0;
+                const maxDiscount = Math.max(beefDiscount, chickenDiscount);
+                const hasDiscount = maxDiscount > 0;
+                return (
+                  <div key={item.id} className="relative bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100">
+                    {/* Ribbon */}
+                    {hasDiscount && (
+                      <div className="absolute -left-10 top-4 rotate-[-45deg] bg-gradient-to-r from-red-500 to-orange-500 text-white text-[11px] font-bold px-10 py-1 shadow">
+                        خصم {maxDiscount}%
+                      </div>
+                    )}
+                    <div className="relative">
+                      <img
+                        src={item.image || DEFAULT_PRODUCT_IMG}
+                        alt={item.name}
+                        className="w-full h-56 object-cover"
+                        loading="lazy"
+                        decoding="async"
+                        referrerPolicy="no-referrer"
+                        onError={(e) => { const img = e.currentTarget as HTMLImageElement; if (img.src !== FALLBACK_IMG) img.src = FALLBACK_IMG; }}
+                      />
+                      <span className="absolute top-3 right-3 bg-white/90 text-red-600 text-xs font-bold px-3 py-1 rounded-full shadow">عرض اليوم</span>
+                    </div>
+                    <div className="p-4">
+                      <h3 className="font-display text-lg font-extrabold text-gray-900 mb-2 line-clamp-1">{item.name}</h3>
+                      {item.description && (
+                        <p className="text-sm text-gray-500 line-clamp-2 mb-3">{item.description}</p>
+                      )}
+                      <div className="space-y-2">
+                        {(typeof item.original_beef_price === 'number' && typeof item.beef_price === 'number' && item.original_beef_price > item.beef_price) && (
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs px-2 py-0.5 rounded-full bg-red-50 text-red-600 border border-red-100">لحم بقري</span>
+                            <span className="text-gray-400 line-through">{item.original_beef_price} ج.س</span>
+                            <span className="font-extrabold text-red-600">{item.beef_price} ج.س</span>
+                            <span className="text-xs text-green-600 font-semibold">وفّرت {(item.original_beef_price - item.beef_price)} ج.س</span>
+                          </div>
+                        )}
+                        {(typeof item.original_chicken_price === 'number' && typeof item.chicken_price === 'number' && item.original_chicken_price > item.chicken_price) && (
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-100">دجاج</span>
+                            <span className="text-gray-400 line-through">{item.original_chicken_price} ج.س</span>
+                            <span className="font-extrabold text-red-600">{item.chicken_price} ج.س</span>
+                            <span className="text-xs text-green-600 font-semibold">وفّرت {(item.original_chicken_price - item.chicken_price)} ج.س</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       </section>
 

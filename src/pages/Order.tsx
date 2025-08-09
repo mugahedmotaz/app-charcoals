@@ -69,7 +69,7 @@ const SimpleBurgerCard: React.FC<{
       </div>
       
       <div className="p-3 sm:p-4 flex flex-col h-full">
-        <h3 className="text-base sm:text-lg font-semibold tracking-tight text-gray-800 mb-1.5 text-center truncate">{burger.name}</h3>
+        <h3 className="font-display text-base sm:text-lg font-semibold tracking-tight text-gray-800 mb-1.5 text-center truncate">{burger.name}</h3>
         <p className="text-gray-600 mb-3 text-center leading-relaxed text-sm line-clamp-1 sm:line-clamp-2">
           {burger.description || 'برجر لذيذ ومحضر بعناية خاصة'}
         </p>
@@ -152,7 +152,8 @@ const SimpleCart: React.FC<{
   isOpen: boolean;
   onClose: () => void;
 }> = ({ isOpen, onClose }) => {
-  const { items, removeItem, clearCart, totalPrice } = useCart();
+  const { items, removeItem, clearCart, totalPrice, addItem } = useCart();
+  const { products: allProducts } = useProducts();
   const [showCheckout, setShowCheckout] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [customerInfo, setCustomerInfo] = useState({
@@ -304,6 +305,48 @@ const SimpleCart: React.FC<{
                     </button>
                   </div>
                 ))}
+
+                {/* Upsell suggestions */}
+                {(() => {
+                  const inCartIds = new Set(items.map(i => i.product.id));
+                  const suggestions = (allProducts || [])
+                    .filter((p: any) => p.is_popular && !inCartIds.has(p.id))
+                    .slice(0, 3);
+                  if (suggestions.length === 0) return null;
+                  return (
+                    <div className="mt-4">
+                      <h4 className="font-display text-base font-extrabold text-gray-900 mb-2">يكملها مع…</h4>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {suggestions.map((p: any) => (
+                          <div key={p.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-200">
+                            <img
+                              src={p.image || DEFAULT_PRODUCT_IMG}
+                              alt={p.name}
+                              className="w-12 h-12 object-cover rounded-lg"
+                              loading="lazy"
+                              decoding="async"
+                              referrerPolicy="no-referrer"
+                              onError={(e) => { const img = e.currentTarget as HTMLImageElement; if (img.src !== FALLBACK_IMG) img.src = FALLBACK_IMG; }}
+                            />
+                            <div className="flex-1 min-w-0">
+                              <div className="text-sm font-semibold text-gray-800 truncate">{p.name}</div>
+                              <div className="text-xs text-gray-600 truncate">{p.description || 'طبق جانبي لذيذ'}</div>
+                            </div>
+                            <button
+                              onClick={() => {
+                                const meat: 'beef' | 'chicken' = typeof p.beef_price === 'number' ? 'beef' : 'chicken';
+                                addItem(p, meat, [], 1);
+                              }}
+                              className="px-3 py-1.5 rounded-lg text-sm font-bold bg-gradient-to-r from-red-500 to-orange-500 text-white hover:shadow-md"
+                            >
+                              إضافة
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })()}
               </div>
 
               {/* Footer summary */}
@@ -499,13 +542,13 @@ const OrderContent: React.FC = () => {
         {filteredBurgers.length === 0 ? (
           <div className="text-center py-20">
             <Search className="w-20 h-20 mx-auto mb-6 text-gray-400" />
-            <h3 className="text-3xl font-bold text-gray-800 mb-4">لم نجد ما تبحث عنه</h3>
+            <h3 className="font-display text-3xl font-extrabold text-gray-800 mb-4">لم نجد ما تبحث عنه</h3>
             <p className="text-gray-600 text-xl">جرب البحث بكلمات أخرى أو تصفح جميع المنتجات</p>
           </div>
         ) : (
           <>
             <div className="flex items-center justify-between mb-12">
-              <h2 className="text-3xl font-bold text-gray-800">
+              <h2 className="font-display text-3xl font-extrabold text-gray-800">
                 {activeCategory === 'all' ? 'جميع المنتجات' : allCategories.find(c => c.id === activeCategory)?.name}
                 <span className="text-gray-500 text-xl mr-3">({filteredBurgers.length})</span>
               </h2>

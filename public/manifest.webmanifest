@@ -1,0 +1,12 @@
+{
+  "name": "Charcoal's Burger",
+  "short_name": "Charcoal's",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ef4444",
+  "description": "أفضل برجر في بورتسودان - طلب سريع وتجربة شهية.",
+  "dir": "rtl",
+  "lang": "ar",
+  "icons": []
+}
