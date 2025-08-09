@@ -163,6 +163,48 @@ const SimpleCart: React.FC<{
   });
   const [errors, setErrors] = useState<{ name?: string; phone?: string; address?: string }>({});
 
+  // WhatsApp message builder
+  const buildWhatsAppMessage = () => {
+    const meatLabel = (m: 'beef' | 'chicken') => (m === 'beef' ? 'لحم' : 'دجاج');
+    const time = new Date().toLocaleString('ar-EG', { dateStyle: 'medium', timeStyle: 'short' });
+    let lines: string[] = [];
+    lines.push('طلب جديد من شاركلز - بورتسودان');
+    lines.push('------------------------------');
+    lines.push(`العميل: ${customerInfo.name}`);
+    lines.push(`الهاتف: ${customerInfo.phone}`);
+    lines.push(`العنوان: ${customerInfo.address}`);
+    lines.push(`الوقت: ${time}`);
+    lines.push('');
+    lines.push('الطلبات:');
+    items.forEach((item, idx) => {
+      const unit = item.totalPrice;
+      const qty = item.quantity;
+      const lineTotal = unit * qty;
+      lines.push(`${idx + 1}) ${item.product.name} - ${meatLabel(item.meat_type)} × ${qty}`);
+      lines.push(`    السعر: ${unit} × ${qty} = ${lineTotal} جنيه`);
+    });
+    lines.push('');
+    lines.push(`الإجمالي: ${totalPrice} جنيه`);
+    lines.push('');
+    lines.push('شكرًا لكم! الرجاء تأكيد الطلب.');
+    return lines.join('\n');
+  };
+
+  const openWhatsAppWithOrder = () => {
+    // number from env, e.g. 249XXXXXXXXX without +
+    const raw = (import.meta as any).env?.VITE_WHATSAPP_NUMBER as string | undefined;
+    const normalize = (n: string) => n.replace(/[^\d]/g, '');
+    const number = raw ? normalize(raw) : '';
+    if (!number) {
+      alert('لم يتم إعداد رقم واتساب المتجر بعد. فضلاً أضف VITE_WHATSAPP_NUMBER في ملف البيئة.');
+      return false;
+    }
+    const msg = buildWhatsAppMessage();
+    const url = `https://wa.me/${number}?text=${encodeURIComponent(msg)}`;
+    window.open(url, '_blank');
+    return true;
+  };
+
   // Accessibility: focus trap & Esc to close
   const modalRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
@@ -216,9 +258,12 @@ const SimpleCart: React.FC<{
 
   const handleCheckout = () => {
     if (!validate()) return;
-    // Simulate order success UX
-    setShowSuccess(true);
-    clearCart();
+    const sent = openWhatsAppWithOrder();
+    if (sent) {
+      // Success UX after opening WhatsApp
+      setShowSuccess(true);
+      clearCart();
+    }
   };
 
   if (!isOpen) return null;
