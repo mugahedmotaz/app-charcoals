@@ -1,0 +1,17 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='1600' height='900' viewBox='0 0 1600 900'>
+  <defs>
+    <linearGradient id='gp1' x1='0' y1='0' x2='1' y2='1'>
+      <stop offset='0%' stop-color='#111827'/>
+      <stop offset='100%' stop-color='#1f2937'/>
+    </linearGradient>
+  </defs>
+  <rect width='1600' height='900' fill='url(#gp1)'/>
+  <g fill='white' opacity='0.06'>
+    <circle cx='250' cy='200' r='140'/>
+    <circle cx='1350' cy='700' r='180'/>
+  </g>
+  <g fill='white' text-anchor='middle' font-family='Segoe UI, Roboto, Arial' font-weight='800'>
+    <text x='50%' y='46%' font-size='80'>BURGER HERO</text>
+    <text x='50%' y='58%' font-size='36' opacity='0.85'>Promo Banner Placeholder</text>
+  </g>
+</svg>

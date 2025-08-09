@@ -1,0 +1,12 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='800' viewBox='0 0 1200 800'>
+  <defs>
+    <linearGradient id='gg4' x1='0' y1='0' x2='1' y2='1'>
+      <stop offset='0%' stop-color='#9a3412'/>
+      <stop offset='100%' stop-color='#fb923c'/>
+    </linearGradient>
+  </defs>
+  <rect width='1200' height='800' fill='url(#gg4)'/>
+  <g fill='#fff' text-anchor='middle' font-family='Segoe UI, Roboto, Arial' font-weight='700'>
+    <text x='50%' y='50%' font-size='42'>Gallery Placeholder 4</text>
+  </g>
+</svg>

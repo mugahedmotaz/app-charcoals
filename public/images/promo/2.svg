@@ -1,0 +1,17 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='1600' height='900' viewBox='0 0 1600 900'>
+  <defs>
+    <linearGradient id='gp2' x1='0' y1='0' x2='1' y2='1'>
+      <stop offset='0%' stop-color='#7f1d1d'/>
+      <stop offset='100%' stop-color='#9a3412'/>
+    </linearGradient>
+  </defs>
+  <rect width='1600' height='900' fill='url(#gp2)'/>
+  <g fill='white' opacity='0.06'>
+    <circle cx='350' cy='250' r='120'/>
+    <circle cx='1250' cy='650' r='160'/>
+  </g>
+  <g fill='white' text-anchor='middle' font-family='Segoe UI, Roboto, Arial' font-weight='800'>
+    <text x='50%' y='46%' font-size='80'>FLAME GRILLED</text>
+    <text x='50%' y='58%' font-size='36' opacity='0.85'>Promo Banner Placeholder</text>
+  </g>
+</svg>
