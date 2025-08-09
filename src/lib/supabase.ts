@@ -1,16 +1,31 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string | undefined;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
 
+let supabase: any;
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('Missing Supabase environment variables. Please set up your .env file with:');
-  console.error('VITE_SUPABASE_URL=your_supabase_url');
-  console.error('VITE_SUPABASE_ANON_KEY=your_supabase_anon_key');
-  throw new Error('Missing Supabase environment variables');
+  // Supabase disabled: export a safe stub to prevent runtime crashes
+  console.warn('[Supabase] Disabled: missing VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY');
+  supabase = {
+    from() {
+      const fail = async () => ({ data: null, error: new Error('Supabase disabled') });
+      return {
+        select: fail,
+        insert: fail,
+        update: fail,
+        delete: fail,
+        eq: () => this,
+        order: () => this,
+        single: fail,
+      } as any;
+    },
+  } as any;
+} else {
+  supabase = createClient(supabaseUrl, supabaseAnonKey);
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export { supabase };
 
 // Types for database tables - متوافقة مع قاعدة البيانات الحالية
 export interface Category {

@@ -19,7 +19,14 @@ export default {
 		},
 		extend: {
 			fontFamily: {
+				display: [
+					'Baloo Bhaijaan 2',
+					'Changa',
+					'system-ui',
+					'ui-sans-serif'
+				],
 				sans: [
+					'Tajawal',
 					'Cairo',
 					'ui-sans-serif',
 					'system-ui',

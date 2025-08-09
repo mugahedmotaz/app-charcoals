@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
 import { Category, BurgerItem, BurgerExtra, Order } from '../types/database';
 import { localCategories, localProducts, localExtras } from '../data/local';
 
-const useLocal = (import.meta as any).env?.VITE_USE_LOCAL_DATA === 'true';
+// Use local data by default unless explicitly disabled with VITE_USE_LOCAL_DATA="false"
+const useLocal = (import.meta as any).env?.VITE_USE_LOCAL_DATA !== 'false';
 
 // Hook للحصول على الأصناف
 export const useCategories = () => {
@@ -24,14 +24,8 @@ export const useCategories = () => {
         setCategories(localCategories.filter(c => c.is_active !== false));
         return;
       }
-      const { data, error } = await supabase
-        .from('categories')
-        .select('*')
-        .eq('is_active', true)
-        .order('sort_order');
-
-      if (error) throw error;
-      setCategories(data || []);
+      // Supabase disabled: fallback to empty list to avoid runtime errors when not using local
+      setCategories([]);
     } catch (err) {
       console.error('Error fetching categories:', err);
       setError(err instanceof Error ? err.message : 'حدث خطأ في جلب الأصناف');
@@ -66,23 +60,8 @@ export const useProducts = (categoryId?: string) => {
         setProducts(data);
         return;
       }
-      let query = supabase
-        .from('products')
-        .select(`
-          *,
-          category:categories(*)
-        `)
-        .eq('is_active', true)
-        .order('sort_order');
-
-      if (categoryId && categoryId !== 'all') {
-        query = query.eq('category_id', categoryId);
-      }
-
-      const { data, error } = await query;
-
-      if (error) throw error;
-      setProducts(data || []);
+      // Supabase disabled: fallback to empty list to avoid runtime errors when not using local
+      setProducts([]);
     } catch (err) {
       console.error('Error fetching products:', err);
       setError(err instanceof Error ? err.message : 'حدث خطأ في جلب المنتجات');
@@ -112,14 +91,8 @@ export const useExtras = () => {
         setExtras(localExtras.filter(e => e.is_active !== false));
         return;
       }
-      const { data, error } = await supabase
-        .from('extras')
-        .select('*')
-        .eq('is_active', true)
-        .order('sort_order');
-
-      if (error) throw error;
-      setExtras(data || []);
+      // Supabase disabled: fallback to empty list to avoid runtime errors when not using local
+      setExtras([]);
     } catch (err) {
       console.error('Error fetching extras:', err);
       setError(err instanceof Error ? err.message : 'حدث خطأ في جلب الإضافات');
@@ -145,23 +118,8 @@ export const useOrders = () => {
     try {
       setLoading(true);
       setError(null);
-      const { data, error } = await supabase
-        .from('orders')
-        .select(`
-          *,
-          order_items(
-            *,
-            product:products(*),
-            order_item_extras(
-              *,
-              extra:extras(*)
-            )
-          )
-        `)
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-      setOrders(data || []);
+      // Supabase disabled: return empty orders list
+      setOrders([]);
     } catch (err) {
       console.error('Error fetching orders:', err);
       setError(err instanceof Error ? err.message : 'حدث خطأ في جلب الطلبات');
@@ -207,57 +165,19 @@ export const useCreateOrder = () => {
         return total + itemTotal + extrasTotal;
       }, 0);
 
-      // إنشاء الطلب
-      const { data: order, error: orderError } = await supabase
-        .from('orders')
-        .insert({
-          customer_name: orderData.customer_name,
-          customer_phone: orderData.customer_phone,
-          customer_address: orderData.customer_address,
-          total_amount: totalAmount,
-          status: 'pending'
-        })
-        .select()
-        .single();
-
-      if (orderError) throw orderError;
-
-      // إضافة عناصر الطلب
-      for (const item of orderData.items) {
-        const { data: orderItem, error: itemError } = await supabase
-          .from('order_items')
-          .insert({
-            order_id: order.id,
-            product_id: item.product_id,
-            meat_type: item.meat_type,
-            quantity: item.quantity,
-            unit_price: item.unit_price,
-            total_price: item.unit_price * item.quantity
-          })
-          .select()
-          .single();
-
-        if (itemError) throw itemError;
-
-        // إضافة إضافات العنصر
-        if (item.extras.length > 0) {
-          const extraInserts = item.extras.map(extra => ({
-            order_item_id: orderItem.id,
-            extra_id: extra.extra_id,
-            quantity: extra.quantity,
-            unit_price: extra.unit_price,
-            total_price: extra.unit_price * extra.quantity
-          }));
-
-          const { error: extrasError } = await supabase
-            .from('order_item_extras')
-            .insert(extraInserts);
-
-          if (extrasError) throw extrasError;
-        }
-      }
-
-      return order;
+      // Supabase disabled: simulate order creation locally
+      const mockOrder = {
+        id: Date.now().toString(),
+        customer_name: orderData.customer_name,
+        customer_phone: orderData.customer_phone,
+        customer_address: orderData.customer_address,
+        total_amount: totalAmount,
+        status: 'pending',
+        created_at: new Date().toISOString(),
+      } as unknown as Order;
+      // Simulate async delay
+      await new Promise((res) => setTimeout(res, 400));
+      return mockOrder;
     } catch (err) {
       console.error('Error creating order:', err);
       const errorMessage = err instanceof Error ? err.message : 'حدث خطأ في إنشاء الطلب';

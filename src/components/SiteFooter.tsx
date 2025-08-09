@@ -4,8 +4,8 @@ import Logo from './logo.png';
 import { Facebook, Instagram } from 'lucide-react';
 
 const SiteFooter: React.FC = () => (
-  <footer className="bg-gray-900 text-gray-300 border-t border-gray-800">
-    <div className="container mx-auto px-4 py-12">
+  <footer className="bg-gray-950 text-gray-300 border-t border-gray-800/60">
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
       <div className="grid grid-cols-1 md:grid-cols-5 gap-10">
         {/* Logo and Description */}
         <div className="md:col-span-2">
@@ -14,26 +14,37 @@ const SiteFooter: React.FC = () => (
               <img src={Logo} alt="Charcoal's Logo" className="w-8 h-8 object-contain" loading="lazy" decoding="async" draggable={false} />
             </div>
             <div className="mr-1">
-              <h1 className="text-2xl font-extrabold text-white">شاركلز</h1>
+              <h1 className="font-display text-2xl font-extrabold text-white tracking-tight">شاركلز</h1>
               <p className="text-sm text-gray-400">بورتسودان</p>
             </div>
           </div>
-          <p className="text-gray-400 mb-6 max-w-md leading-relaxed">
+          <p className="text-gray-400/90 mb-6 max-w-md leading-relaxed">
             أفضل برجر في بورتسودان. طعم لا يُنسى مع كل قضمة. نقدم تجربة طعام استثنائية بأجود المكونات وأفضل الخدمات.
           </p>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5">
             <a href="#" className="inline-flex items-center justify-center w-9 h-9 rounded-lg ring-1 ring-white/10 hover:ring-white/20 bg-white/5 hover:bg-white/10 transition" aria-label="Facebook">
               <Facebook className="w-4.5 h-4.5" />
             </a>
             <a href="#" className="inline-flex items-center justify-center w-9 h-9 rounded-lg ring-1 ring-white/10 hover:ring-white/20 bg-white/5 hover:bg-white/10 transition" aria-label="Instagram">
               <Instagram className="w-4.5 h-4.5" />
             </a>
+            <a href="#" className="inline-flex items-center justify-center w-9 h-9 rounded-lg ring-1 ring-white/10 hover:ring-white/20 bg-white/5 hover:bg-white/10 transition" aria-label="TikTok">
+              <img
+                src="https://cdn.simpleicons.org/tiktok/ffffff"
+                alt="TikTok"
+                className="w-4 h-4"
+                loading="lazy"
+                decoding="async"
+                referrerPolicy="no-referrer"
+                onError={(e) => { (e.currentTarget as HTMLImageElement).style.visibility = 'hidden'; }}
+              />
+            </a>
           </div>
         </div>
 
         {/* Quick Links */}
         <nav aria-label="روابط سريعة">
-          <h3 className="text-sm font-semibold text-white mb-4 tracking-wider">روابط سريعة</h3>
+          <h3 className="font-display text-sm font-bold text-white/90 mb-3 tracking-tight">روابط سريعة</h3>
           <ul className="space-y-2 text-sm">
             <li><Link to="/" className="text-gray-400 hover:text-white transition">الرئيسية</Link></li>
             <li><Link to="/order" className="text-gray-400 hover:text-white transition">اطلب الآن</Link></li>
@@ -44,8 +55,8 @@ const SiteFooter: React.FC = () => (
 
         {/* Contact Info */}
         <div>
-          <h3 className="text-sm font-semibold text-white mb-4 tracking-wider">تواصل معنا</h3>
-          <address className="not-italic space-y-2 text-sm text-gray-400">
+          <h3 className="font-display text-sm font-bold text-white/90 mb-3 tracking-tight">تواصل معنا</h3>
+          <address className="not-italic space-y-2 text-sm text-gray-400/90">
             <p>📍 بورتسودان، السودان</p>
             <p>📞 +249 123 456 789</p>
             <p>✉️ info@charcoals.sd</p>
@@ -55,12 +66,12 @@ const SiteFooter: React.FC = () => (
 
         {/* Newsletter */}
         <div>
-          <h3 className="text-sm font-semibold text-white mb-4 tracking-wider">انضم إلى نشرتنا</h3>
+          <h3 className="font-display text-sm font-bold text-white/90 mb-3 tracking-tight">انضم إلى نشرتنا</h3>
           <form className="flex gap-2" onSubmit={(e) => e.preventDefault()}>
             <input
               type="email"
               placeholder="بريدك الإلكتروني"
-              className="w-full rounded-lg bg-gray-800 border border-gray-700 px-3 py-2 text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500/40 focus:border-gray-600"
+              className="w-full rounded-lg bg-gray-900/60 border border-gray-800 px-3 py-2 text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500/30 focus:border-gray-700"
               required
             />
             <button type="submit" className="rounded-lg bg-gradient-to-r from-red-500 to-orange-500 text-white px-4 py-2 text-sm font-semibold hover:from-red-600 hover:to-orange-600 transition">
@@ -95,9 +106,9 @@ const SiteFooter: React.FC = () => (
           ))}
         </div>
 
-        <div className="text-center text-gray-500">
+        <div className="flex flex-col items-center gap-1 text-center text-gray-500">
           <p>© 2024 Charcoal's. جميع الحقوق محفوظة.</p>
-          <p className="mt-2">Development by <span className="text-gray-300 font-semibold">Mugahed Motaz</span></p>
+          <p className="">Development by <span className="text-gray-300 font-semibold">Mugahed Motaz</span></p>
         </div>
       </div>
     </div>

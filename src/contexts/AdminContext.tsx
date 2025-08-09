@@ -1,7 +1,9 @@
 import React, { createContext, useContext, useReducer, ReactNode } from 'react';
 import { AdminContextType, BurgerItem, Category, BurgerExtra } from '../types/database';
-import { supabase } from '../lib/supabase';
 import { useState, useEffect } from 'react';
+import { localCategories, localProducts, localExtras } from '../data/local';
+
+const useLocal = (import.meta as any).env?.VITE_USE_LOCAL_DATA !== 'false';
 
 const AdminContext = createContext<AdminContextType | undefined>(undefined);
 
@@ -16,37 +18,17 @@ export const AdminProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     try {
       setLoading(true);
       setError(null);
-      
-      // جلب المنتجات
-      const { data: productsData, error: productsError } = await supabase
-        .from('products')
-        .select(`
-          *,
-          category:categories(*)
-        `)
-        .order('sort_order');
-
-      if (productsError) throw productsError;
-
-      // جلب الأصناف
-      const { data: categoriesData, error: categoriesError } = await supabase
-        .from('categories')
-        .select('*')
-        .order('sort_order');
-
-      if (categoriesError) throw categoriesError;
-
-      // جلب الإضافات
-      const { data: extrasData, error: extrasError } = await supabase
-        .from('extras')
-        .select('*')
-        .order('sort_order');
-
-      if (extrasError) throw extrasError;
-
-      setProducts(productsData || []);
-      setCategories(categoriesData || []);
-      setExtras(extrasData || []);
+      if (useLocal) {
+        // Local mode: populate from local data
+        setProducts(localProducts);
+        setCategories(localCategories);
+        setExtras(localExtras);
+        return;
+      }
+      // If not local mode, this context expects a Supabase backend. For now, keep empty.
+      setProducts([]);
+      setCategories([]);
+      setExtras([]);
     } catch (err) {
       console.error('Error fetching admin data:', err);
       setError(err instanceof Error ? err.message : 'حدث خطأ');
@@ -62,15 +44,13 @@ export const AdminProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   const addProduct = async (productData: Omit<BurgerItem, 'id'>) => {
     try {
       setError(null);
-      const { data, error } = await supabase
-        .from('products')
-        .insert([productData])
-        .select()
-        .single();
-
-      if (error) throw error;
-      await fetchData();
-      return data;
+      if (useLocal) {
+        const newItem: BurgerItem = { id: Date.now().toString(), ...productData } as BurgerItem;
+        setProducts(prev => [...prev, newItem]);
+        return;
+      }
+      // Non-local: no-op placeholder
+      return;
     } catch (err) {
       console.error('Error adding product:', err);
       throw new Error(err instanceof Error ? err.message : 'حدث خطأ في إضافة المنتج');
@@ -80,13 +60,10 @@ export const AdminProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   const updateProduct = async (id: string, productData: Partial<BurgerItem>) => {
     try {
       setError(null);
-      const { error } = await supabase
-        .from('products')
-        .update(productData)
-        .eq('id', id);
-
-      if (error) throw error;
-      await fetchData();
+      if (useLocal) {
+        setProducts(prev => prev.map(p => p.id === id ? { ...p, ...productData } as BurgerItem : p));
+        return;
+      }
     } catch (err) {
       console.error('Error updating product:', err);
       throw new Error(err instanceof Error ? err.message : 'حدث خطأ في تحديث المنتج');
@@ -96,13 +73,10 @@ export const AdminProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   const deleteProduct = async (id: string) => {
     try {
       setError(null);
-      const { error } = await supabase
-        .from('products')
-        .update({ is_active: false })
-        .eq('id', id);
-
-      if (error) throw error;
-      await fetchData();
+      if (useLocal) {
+        setProducts(prev => prev.filter(p => p.id !== id));
+        return;
+      }
     } catch (err) {
       console.error('Error deleting product:', err);
       throw new Error(err instanceof Error ? err.message : 'حدث خطأ في حذف المنتج');
@@ -112,15 +86,12 @@ export const AdminProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   const addCategory = async (categoryData: Omit<Category, 'id'>) => {
     try {
       setError(null);
-      const { data, error } = await supabase
-        .from('categories')
-        .insert([categoryData])
-        .select()
-        .single();
-
-      if (error) throw error;
-      await fetchData();
-      return data;
+      if (useLocal) {
+        const newCategory: Category = { id: Date.now().toString(), sort_order: 0, is_active: true, ...categoryData } as Category;
+        setCategories(prev => [...prev, newCategory]);
+        return;
+      }
+      return;
     } catch (err) {
       console.error('Error adding category:', err);
       throw new Error(err instanceof Error ? err.message : 'حدث خطأ في إضافة الصنف');
@@ -130,13 +101,10 @@ export const AdminProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   const updateCategory = async (id: string, categoryData: Partial<Category>) => {
     try {
       setError(null);
-      const { error } = await supabase
-        .from('categories')
-        .update(categoryData)
-        .eq('id', id);
-
-      if (error) throw error;
-      await fetchData();
+      if (useLocal) {
+        setCategories(prev => prev.map(c => c.id === id ? { ...c, ...categoryData } as Category : c));
+        return;
+      }
     } catch (err) {
       console.error('Error updating category:', err);
       throw new Error(err instanceof Error ? err.message : 'حدث خطأ في تحديث الصنف');
@@ -146,13 +114,10 @@ export const AdminProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   const deleteCategory = async (id: string) => {
     try {
       setError(null);
-      const { error } = await supabase
-        .from('categories')
-        .update({ is_active: false })
-        .eq('id', id);
-
-      if (error) throw error;
-      await fetchData();
+      if (useLocal) {
+        setCategories(prev => prev.filter(c => c.id !== id));
+        return;
+      }
     } catch (err) {
       console.error('Error deleting category:', err);
       throw new Error(err instanceof Error ? err.message : 'حدث خطأ في حذف الصنف');

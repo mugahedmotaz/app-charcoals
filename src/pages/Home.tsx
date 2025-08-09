@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import HeroSection from '../components/HeroSection';
 import { useProducts } from '../hooks/useSupabase';
 import Header from '../components/Header';
+import SiteFooter from '../components/SiteFooter';
 import Logo from '../components/logo.png';
 import { Facebook, Instagram, Drumstick, Flame, FlaskConical, Zap, Star, Lock, Leaf, Truck } from 'lucide-react';
 
@@ -437,68 +438,7 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-gray-800 text-white py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            {/* Logo and Description */}
-            <div className="col-span-1 md:col-span-2">
-              <div className="flex items-center space-x-3 mb-6">
-                <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
-                  <img src={Logo} alt="Logo" className="w-8" />
-                </div>
-                <div className="mr-3">
-                  <h1 className="text-2xl font-bold text-white">
-                    شاركلز
-                  </h1>
-                  <p className="text-gray-400">بورتسودان</p>
-                </div>
-              </div>
-              <p className="text-gray-300 mb-6 max-w-md">
-                أفضل برجر في بورتسودان. طعم لا يُنسى مع كل قضمة. نقدم لك تجربة طعام استثنائية بأجود المكونات وأفضل الخدمات.
-              </p>
-              <div className="flex items-center gap-4">
-                <a href="#" className="bg-blue-600 p-2 rounded-lg hover:bg-blue-700 transition" aria-label="Facebook">
-                  <Facebook className="w-5 h-5" />
-                </a>
-                <a href="#" className="bg-pink-600 p-2 rounded-lg hover:bg-pink-700 transition" aria-label="Instagram">
-                  <Instagram className="w-5 h-5" />
-                </a>
-              </div>
-            </div>
-
-            {/* Quick Links */}
-            <div>
-              <h3 className="text-lg font-bold mb-4">روابط سريعة</h3>
-              <ul className="space-y-2">
-                <li><a href="/" className="text-gray-300 hover:text-white transition">الرئيسية</a></li>
-                <li><a href="/about" className="text-gray-300 hover:text-white transition">من نحن</a></li>
-                <li><a href="/contact" className="text-gray-300 hover:text-white transition">اتصل بنا</a></li>
-              </ul>
-            </div>
-
-            {/* Contact Info */}
-            <div>
-              <h3 className="text-lg font-bold mb-4">تواصل معنا</h3>
-              <ul className="space-y-2 text-gray-300 text-sm">
-                <li>📍 بورتسودان، السودان</li>
-                <li>📞 +249 123 456 789</li>
-                <li>✉️ info@charcoals.sd</li>
-                <li>🕒 9:00 ص - 12:00 م</li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="border-t border-gray-700 mt-8 pt-8 text-center text-sm">
-            <p className="text-gray-400">
-              © 2024 Charcoal's. جميع الحقوق محفوظة.
-            </p>
-            <p className="text-gray-400 mt-2">
-              Development by <span className="text-red-400 font-bold">Mugahed Motaz</span>
-            </p>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
       {/* Bottom Sticky CTA */}
       <div className="fixed inset-x-0 bottom-4 z-40 px-4 md:px-0">
         <div className="mx-auto max-w-3xl bg-white/90 dark:bg-zinc-900/90 backdrop-blur-lg border border-gray-200 dark:border-zinc-800 rounded-2xl shadow-2xl p-4 flex items-center justify-between gap-4">

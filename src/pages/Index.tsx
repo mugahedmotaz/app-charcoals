@@ -10,6 +10,7 @@ import { useCategories, useProducts } from '../hooks/useSupabase';
 import { BurgerItem } from '../types/database';
 import Logo from "../components/logo.png"
 import { Facebook, Instagram } from 'lucide-react';
+import SiteFooter from '../components/SiteFooter';
 
 const IndexContent: React.FC = () => {
   const { categories, loading: categoriesLoading, error: categoriesError } = useCategories();
@@ -173,62 +174,7 @@ const IndexContent: React.FC = () => {
             </div>
 
 
-      {/* Footer */}
-      <footer className="bg-white text-gray-800 py-10 border-t">
-        <div className="container mx-auto px-4 text-center">
-          
-          {/* Logo and Title */}
-          <div className="flex items-center space-x-3 justify-center mb-12">
-            <div className="relative">
-              <div className=" ml-2 w-12 h-12 bg-gradient-to-br from-red-500 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
-                <img src={Logo} alt="Logo" className="w-12" />
-              </div>
-            </div>
-            <div className="hidden md:block">
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">
-                شاركلز
-              </h1>
-              <p className="text-sm text-gray-500 font-medium">بورتسودان</p>
-            </div>
-          </div>
-
-          {/* Social Links */}
-          <div className="flex justify-center items-center gap-3 my-4">
-            <a href="#" aria-label="Facebook">
-              <Facebook className="w-8 h-8 text-white bg-gradient-to-r from-red-500 to-orange-500 p-1 rounded-md hover:bg-yellow-600 transition" />
-            </a>
-            <a href="#" aria-label="Instagram">
-              <Instagram className="w-8 h-8 text-white bg-gradient-to-r from-red-500 to-orange-500 p-1 rounded-md hover:bg-yellow-600 transition" />
-            </a>
-          </div>
-
-          {/* Description */}
-          <p className="text-gray-600 my-6">
-            أفضل برجر في <span className="relative">
-                      <span className="bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">
-                         بورتسـودان
-                      </span>
-                      <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-red-500 to-orange-500 rounded-full"></div>
-                    </span>  طعم لا يُنسى مع كل قضمة
-          </p>
-
-          {/* Footer Links */}
-          <div className="flex justify-center flex-wrap gap-6 text-sm text-gray-600 mb-6">
-            <a href="#" className="hover:text-red-500 transition">من نحن</a>
-            <a href="#" className="hover:text-red-500 transition">اتصل بنا</a>
-            <a href="#" className="hover:text-red-500 transition">سياسة الخصوصية</a>
-            <a href="#" className="hover:text-red-500 transition">الشروط والأحكام</a>
-          </div>
-
-          {/* Bottom Note */}
-          <p className="text-xs text-gray-500">
-            © 2024 Charcoal's. جميع الحقوق محفوظة.
-          </p>
-          <p className="text-xs text-gray-500 mt-2">
-            Development by <a className="text-red-600 font-bold" href='#'>Mugahed Motaz</a>
-          </p>
-        </div>
-      </footer>
+      <SiteFooter />
 
       {/* Modals */}
       <BurgerDetails

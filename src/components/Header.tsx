@@ -24,8 +24,7 @@ const Header: React.FC<HeaderProps> = () => {
               {/* <div className="absolute -top-1 -right-1 w-4 h-4 bg-yellow-400 rounded-full animate-pulse"></div> */}
             </div>
             <div className="hidden md:block">
-              
-              <p className=" text-gray-700 font-medium">  شاركلز - بورتسودان</p>
+              <p className="font-display text-gray-800 font-extrabold tracking-tight text-lg">شاركلز - بورتسودان</p>
             </div>
           </div>
 
@@ -102,10 +101,10 @@ const Header: React.FC<HeaderProps> = () => {
             {/* Mobile Navigation */}
             <nav className="space-y-2">
               {[
-                { name: 'الرئيسية', href: '#home', icon: <Home   className='bg-gradient-to-tr from-red-500 to-orange-500 w-8 h-8  p-2 rounded-md text-white'/> },
-                { name: 'القائمة', href: '#menu', icon: <Menu  className='bg-gradient-to-tr from-red-500 to-orange-500 w-8 h-8  p-2 rounded-md text-white'/>  },
-                { name: 'العروض', href: '#offers', icon: <MenuSquare  className='bg-gradient-to-tr from-red-500 to-orange-500 w-8 h-8 p-2 rounded-md text-white' /> },
-                { name: 'اتصل بنا', href: '#contact', icon: <Phone   className='bg-gradient-to-tr from-red-500 to-orange-500 w-8 h-8 p-2 rounded-md text-white'/> }
+                { name: 'الرئيسية', href: '/#home', icon: <Home   className='bg-gradient-to-tr from-red-500 to-orange-500 w-8 h-8  p-2 rounded-md text-white'/> },
+                { name: 'القائمة', href: '/#menu', icon: <Menu  className='bg-gradient-to-tr from-red-500 to-orange-500 w-8 h-8  p-2 rounded-md text-white'/>  },
+                { name: 'العروض', href: '/#offers', icon: <MenuSquare  className='bg-gradient-to-tr from-red-500 to-orange-500 w-8 h-8 p-2 rounded-md text-white' /> },
+                { name: 'اتصل بنا', href: '/#contact', icon: <Phone   className='bg-gradient-to-tr from-red-500 to-orange-500 w-8 h-8 p-2 rounded-md text-white'/> }
               ].map((item) => (
                 <a
                   key={item.name}
