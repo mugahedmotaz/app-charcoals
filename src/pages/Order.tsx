@@ -49,12 +49,12 @@ const SimpleBurgerCard: React.FC<{
   const currentPrice = selectedMeat === 'beef' ? burger.beef_price : burger.chicken_price;
 
   return (
-    <div className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 border border-gray-100 flex flex-col">
+    <div className="bg-white rounded-xl shadow-sm overflow-hidden transition-all duration-200 border border-gray-200 flex flex-col">
       <div className="relative">
         <img 
           src={burger.image || DEFAULT_PRODUCT_IMG} 
           alt={burger.name}
-          className="w-full h-32 sm:h-36 object-cover"
+          className="w-full h-28 sm:h-32 object-cover"
           loading="lazy"
           decoding="async"
           referrerPolicy="no-referrer"
@@ -68,77 +68,77 @@ const SimpleBurgerCard: React.FC<{
         )}
       </div>
       
-      <div className="p-3 sm:p-4 flex flex-col h-full">
-        <h3 className="font-display text-base sm:text-lg font-semibold tracking-tight text-gray-800 mb-1.5 text-center truncate">{burger.name}</h3>
-        <p className="text-gray-600 mb-3 text-center leading-relaxed text-sm line-clamp-1 sm:line-clamp-2">
+      <div className="p-3 flex flex-col h-full">
+        <h3 className="font-display text-sm sm:text-base font-semibold tracking-tight text-gray-900 mb-1 text-center truncate">{burger.name}</h3>
+        <p className="text-gray-600 mb-2 text-center leading-relaxed text-xs line-clamp-1 sm:line-clamp-2">
           {burger.description || 'برجر لذيذ ومحضر بعناية خاصة'}
         </p>
         
         {/* اختيار نوع اللحم */}
-        <div className="mb-3">
-          <h4 className="text-sm font-semibold text-gray-800 mb-2 text-center">اختر نوع اللحم:</h4>
-          <div className="grid grid-cols-2 gap-2.5">
+        <div className="mb-2.5">
+          <h4 className="text-xs font-semibold text-gray-800 mb-2 text-center">اختر نوع اللحم:</h4>
+          <div className="grid grid-cols-2 gap-2">
             <button
               onClick={() => setSelectedMeat('beef')}
-              className={`p-3 rounded-lg border-2 transition-all duration-300 ${
+              className={`p-2.5 rounded-lg border transition-colors duration-200 ${
                 selectedMeat === 'beef'
                   ? 'border-red-500 bg-red-50 text-red-700'
                   : 'border-gray-200 hover:border-gray-300'
               }`}
             >
-              <ChefHat className="w-5 h-5 mb-1.5" />
-              <div className="font-semibold text-sm">لحم</div>
-              <div className="text-base font-extrabold text-red-600">{burger.beef_price} جنيه</div>
+              <ChefHat className="w-4 h-4 mb-1" />
+              <div className="font-semibold text-xs">لحم</div>
+              <div className="text-sm font-extrabold text-red-600">{burger.beef_price} جنيه</div>
             </button>
             <button
               onClick={() => setSelectedMeat('chicken')}
-              className={`p-3 rounded-lg border-2 transition-all duration-300 ${
+              className={`p-2.5 rounded-lg border transition-colors duration-200 ${
                 selectedMeat === 'chicken'
                   ? 'border-amber-500 bg-amber-50 text-amber-700'
                   : 'border-gray-200 hover:border-gray-300'
               }`}
             >
-              <Drumstick className="w-5 h-5 mb-1.5" />
-              <div className="font-semibold text-sm">دجاج</div>
-              <div className="text-base font-extrabold text-amber-600">{burger.chicken_price} جنيه</div>
+              <Drumstick className="w-4 h-4 mb-1" />
+              <div className="font-semibold text-xs">دجاج</div>
+              <div className="text-sm font-extrabold text-amber-600">{burger.chicken_price} جنيه</div>
             </button>
           </div>
         </div>
         
         {/* اختيار الكمية */}
-        <div className="mb-4">
-          <h4 className="text-sm font-semibold text-gray-800 mb-2 text-center">الكمية:</h4>
+        <div className="mb-3">
+          <h4 className="text-xs font-semibold text-gray-800 mb-2 text-center">الكمية:</h4>
           <div className="flex items-center justify-center gap-3">
             <button 
               onClick={() => setQuantity(Math.max(1, quantity - 1))}
-              className="w-9 h-9 bg-gray-100 rounded-full flex items-center justify-center text-gray-700 hover:bg-gray-200 transition"
+              className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-gray-700 hover:bg-gray-200 transition"
             >
-              <Minus className="w-4 h-4" />
+              <Minus className="w-3.5 h-3.5" />
             </button>
-            <span className="text-lg font-bold bg-gray-50 px-4 py-1.5 rounded-full">{quantity}</span>
+            <span className="text-base font-bold bg-gray-50 px-3 py-1 rounded-full">{quantity}</span>
             <button 
               onClick={() => setQuantity(quantity + 1)}
-              className="w-9 h-9 bg-gray-100 rounded-full flex items-center justify-center text-gray-700 hover:bg-gray-200 transition"
+              className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-gray-700 hover:bg-gray-200 transition"
             >
-              <Plus className="w-4 h-4" />
+              <Plus className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>
         
         {/* السعر الإجمالي + زر أسفل البطاقة */}
         <div className="mt-auto">
-          <div className="text-center mb-2.5">
-            <div className="text-xl sm:text-2xl font-extrabold text-red-600 tracking-tight">
+          <div className="text-center mb-2">
+            <div className="text-lg sm:text-xl font-extrabold text-red-600 tracking-tight">
               {currentPrice * quantity} جنيه
             </div>
-            <div className="text-gray-500 text-sm">السعر الإجمالي</div>
+            <div className="text-gray-500 text-xs">السعر الإجمالي</div>
           </div>
           
           <button 
             onClick={handleAddToCart}
-            className="w-full bg-gradient-to-r from-red-500 to-orange-500 text-white py-2.5 sm:py-3 rounded-xl font-bold text-base hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2.5"
+            className="w-full bg-gradient-to-r from-red-500 to-orange-500 text-white py-2.5 rounded-lg font-bold text-sm hover:shadow-md transition-all duration-200 flex items-center justify-center gap-2"
           >
-            <Plus className="w-5 h-5" />
+            <Plus className="w-4 h-4" />
             أضف للسلة
           </button>
         </div>
@@ -503,36 +503,41 @@ const OrderContent: React.FC = () => {
       <Header />
 
       {/* البحث والفلاتر */}
-      <section className="bg-white shadow-lg">
-        <div className="container mx-auto px-4 py-8">
+      <section className="bg-white shadow-sm border-b border-gray-100">
+        <div className="container mx-auto px-4 py-4">
           {/* البحث */}
-          <div className="relative mb-8">
-            <Search className="absolute right-6 top-1/2 transform -translate-y-1/2 text-gray-400 w-6 h-6" />
+          <div className="relative mb-6">
+            <Search className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
             <input 
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="🔍 ابحث عن البرجر المفضل لديك..."
-              className="w-full pr-16 pl-6 py-5 border-2 border-gray-300 rounded-2xl focus:ring-4 focus:ring-red-200 focus:border-red-500 text-xl"
+              placeholder="ابحث عن البرجر المفضل لديك..."
+              className="w-full pr-12 pl-5 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-200 focus:border-red-500 text-base"
             />
           </div>
 
           {/* الفئات */}
-          <div className="flex gap-4 overflow-x-auto pb-4">
-            {allCategories.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => setActiveCategory(category.id)}
-                className={`flex items-center gap-3 px-8 py-4 rounded-2xl whitespace-nowrap font-bold text-lg transition-all duration-300 ${
-                  activeCategory === category.id
-                    ? 'bg-gradient-to-r from-red-500 to-orange-500 text-white shadow-lg scale-105'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
-              >
-                <Utensils className="w-5 h-5" />
-                {category.name}
-              </button>
-            ))}
+          <div className="relative -mx-4">
+            <div className="px-4 flex gap-2.5 overflow-x-auto pb-2 snap-x snap-mandatory" aria-label="تصنيفات">
+              {allCategories.map((category) => (
+                <button
+                  key={category.id}
+                  onClick={() => setActiveCategory(category.id)}
+                  className={`flex items-center gap-2 px-5 py-2.5 md:px-6 md:py-3 rounded-full md:rounded-xl whitespace-nowrap min-w-max font-bold text-sm md:text-base transition-colors duration-200 ${
+                    activeCategory === category.id
+                      ? 'bg-gradient-to-r from-red-500 to-orange-500 text-white shadow-md'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  } snap-start`}
+                >
+                  <Utensils className="w-4 h-4" />
+                  {category.name}
+                </button>
+              ))}
+            </div>
+            {/* Mobile fade edges to hint scroll */}
+            <div className="pointer-events-none absolute top-0 right-0 h-full w-6 bg-gradient-to-l from-white to-transparent sm:hidden"></div>
+            <div className="pointer-events-none absolute top-0 left-0 h-full w-6 bg-gradient-to-r from-white to-transparent sm:hidden"></div>
           </div>
         </div>
       </section>
@@ -547,7 +552,7 @@ const OrderContent: React.FC = () => {
           </div>
         ) : (
           <>
-            <div className="flex items-center justify-between mb-12">
+            <div className="flex items-center justify-between mb-8">
               <h2 className="font-display text-3xl font-extrabold text-gray-800">
                 {activeCategory === 'all' ? 'جميع المنتجات' : allCategories.find(c => c.id === activeCategory)?.name}
                 <span className="text-gray-500 text-xl mr-3">({filteredBurgers.length})</span>
@@ -564,7 +569,7 @@ const OrderContent: React.FC = () => {
               )}
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4 items-stretch">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3 items-stretch">
               {filteredBurgers.map((burger) => (
                 <SimpleBurgerCard
                   key={burger.id}
@@ -592,13 +597,13 @@ const OrderContent: React.FC = () => {
       {/* زر سلة عائم ثابت أسفل الشاشة */}
       <button
         onClick={() => setIsCartOpen(true)}
-        className={`fixed bottom-6 right-4 sm:bottom-8 sm:right-8 z-50 bg-gradient-to-r from-red-500 to-orange-500 text-white p-4 sm:p-5 rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 ${bump ? 'animate-bounce' : ''} focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-red-300 focus-visible:ring-offset-2`}
+        className={`fixed bottom-5 right-4 sm:bottom-7 sm:right-7 z-50 bg-gradient-to-r from-red-500 to-orange-500 text-white p-3.5 sm:p-4 rounded-full shadow-xl hover:shadow-2xl transition-all duration-200 ${bump ? 'animate-bounce' : ''} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-300 focus-visible:ring-offset-2`}
         aria-label="فتح السلة"
       >
         <div className="relative">
-          <ShoppingCart className="w-6 h-6 sm:w-7 sm:h-7" />
+          <ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6" />
           {items.length > 0 && (
-            <span className="absolute -top-3 -right-3 bg-yellow-500 text-black text-xs sm:text-sm font-extrabold rounded-full w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center">
+            <span className="absolute -top-3 -right-3 bg-yellow-500 text-black text-[11px] sm:text-xs font-extrabold rounded-full w-6 h-6 sm:w-6 sm:h-6 flex items-center justify-center">
               {items.length}
             </span>
           )}

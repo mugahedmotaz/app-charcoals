@@ -12,34 +12,34 @@ const Header: React.FC<HeaderProps> = () => {
   
 
   return (
-    <header className="bg-white shadow-lg border-b border-gray-100 sticky top-0 z-40">
+    <header className="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-40">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-14">
           {/* Logo Section */}
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2.5">
             <div className="relative">
-              <div className=" ml-2 w-12 h-12 bg-gradient-to-tr from-red-500 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
-                <img src={Logo} alt="Logo" className="w-12" />
+              <div className=" ml-2 w-9 h-9 bg-gradient-to-tr from-red-500 to-orange-500 rounded-lg flex items-center justify-center shadow-md">
+                <img src={Logo} alt="Logo" className="w-9" />
               </div>
               {/* <div className="absolute -top-1 -right-1 w-4 h-4 bg-yellow-400 rounded-full animate-pulse"></div> */}
             </div>
             <div className="hidden md:block">
-              <p className="font-display text-gray-800 font-extrabold tracking-tight text-lg">شاركلز - بورتسودان</p>
+              <p className="font-display text-gray-800 font-extrabold tracking-tight text-sm md:text-base">شاركلز - بورتسودان</p>
             </div>
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center  ">
+          <nav className="hidden lg:flex items-center gap-1.5">
             {[
               { name: 'الرئيسية', href: '/#home', active: true },
-              { name: 'القائمة', href: '/#menu' },
+              { name: 'القائمة', href: '/order' },
               { name: 'العروض', href: '/#offers' },
               { name: 'اتصل بنا', href: '/#contact' }
             ].map((item) => (
               <a
                 key={item.name}
                 href={item.href}
-                className={`relative px-4 py-2  mx-2 rounded-lg font-medium transition-all duration-300 ${
+                className={`relative px-3 py-1.5 mx-1.5 rounded-lg font-medium transition-colors duration-200 ${
                   item.active
                     ? 'text-red-600 bg-red-50'
                     : 'text-gray-700 hover:text-red-600 hover:bg-gray-50'
@@ -56,7 +56,7 @@ const Header: React.FC<HeaderProps> = () => {
           {/* Search Bar removed for cleaner marketing header */}
 
           {/* Action Buttons */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-3">
 
             {/* Notifications */}
             {/* <button className="relative p-3 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all duration-300"> */}
@@ -86,30 +86,30 @@ const Header: React.FC<HeaderProps> = () => {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="lg:hidden p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all duration-300 "
+              className="lg:hidden p-1.5 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-xl transition-colors duration-200 "
             >
-              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6 " />}
+              {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5 " />}
             </button>
           </div>
         </div>
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="lg:hidden border-t border-gray-100 py-4 animate-in slide-in-from-top-2 duration-300">
+          <div className="lg:hidden border-t border-gray-100 py-3 animate-in slide-in-from-top-2 duration-300">
             {/* Mobile Search removed */}
 
             {/* Mobile Navigation */}
             <nav className="space-y-2">
               {[
-                { name: 'الرئيسية', href: '/#home', icon: <Home   className='bg-gradient-to-tr from-red-500 to-orange-500 w-8 h-8  p-2 rounded-md text-white'/> },
-                { name: 'القائمة', href: '/#menu', icon: <Menu  className='bg-gradient-to-tr from-red-500 to-orange-500 w-8 h-8  p-2 rounded-md text-white'/>  },
-                { name: 'العروض', href: '/#offers', icon: <MenuSquare  className='bg-gradient-to-tr from-red-500 to-orange-500 w-8 h-8 p-2 rounded-md text-white' /> },
-                { name: 'اتصل بنا', href: '/#contact', icon: <Phone   className='bg-gradient-to-tr from-red-500 to-orange-500 w-8 h-8 p-2 rounded-md text-white'/> }
+                { name: 'الرئيسية', href: '/#home', icon: <Home   className='bg-gradient-to-tr from-red-500 to-orange-500 w-7 h-7  p-1.5 rounded-md text-white'/> },
+                { name: 'القائمة', href: '/#menu', icon: <Menu  className='bg-gradient-to-tr from-red-500 to-orange-500 w-7 h-7  p-1.5 rounded-md text-white'/>  },
+                { name: 'العروض', href: '/#offers', icon: <MenuSquare  className='bg-gradient-to-tr from-red-500 to-orange-500 w-7 h-7 p-1.5 rounded-md text-white' /> },
+                { name: 'اتصل بنا', href: '/#contact', icon: <Phone   className='bg-gradient-to-tr from-red-500 to-orange-500 w-7 h-7 p-1.5 rounded-md text-white'/> }
               ].map((item) => (
                 <a
                   key={item.name}
                   href={item.href}
-                  className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all duration-300 font-medium"
+                  className="flex items-center gap-3 px-3.5 py-2.5 text-gray-700 hover:text-red-600 hover:bg-red-50 rounded-xl transition-colors duration-200 font-medium"
                 >
                   <span className="text-lg">{item.icon}</span>
                   {item.name}

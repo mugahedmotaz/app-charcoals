@@ -1,36 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Clock, Star, Truck, Play, Pause, ArrowLeft } from 'lucide-react';
+import React from 'react';
+import { Clock, Star, Truck, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const HeroSection: React.FC = () => {
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const [isPlaying, setIsPlaying] = useState(true);
-
-  useEffect(() => {
-    const v = videoRef.current;
-    if (!v) return;
-    const attempt = v.play();
-    if (attempt && typeof (attempt as Promise<void>).then === 'function') {
-      (attempt as Promise<void>).then(() => setIsPlaying(!v.paused)).catch(() => setIsPlaying(false));
-    } else {
-      setIsPlaying(!v.paused);
-    }
-  }, []);
-
-  const handleToggleVideo = () => {
-    const v = videoRef.current;
-    if (!v) return;
-    if (v.paused) {
-      v.play();
-      setIsPlaying(true);
-    } else {
-      v.pause();
-      setIsPlaying(false);
-    }
-  };
-
+  
   return (
-    <section className="relative min-h-screen bg-gradient-to-br from-red-50 via-orange-50 to-yellow-50 overflow-hidden">
+    <section className="relative min-h-[60vh] bg-gradient-to-br from-red-50 via-orange-50 to-yellow-50 overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0">
         <div className="absolute top-20 left-10 w-72 h-72 bg-red-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob"></div>
@@ -38,8 +13,8 @@ const HeroSection: React.FC = () => {
         <div className="absolute -bottom-8 left-20 w-72 h-72 bg-orange-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-4000"></div>
       </div>
 
-      <div className="container mx-auto px-4 py-20 relative">
-        <div className="grid lg:grid-cols-2 gap-16 items-center min-h-[80vh]">
+      <div className="container mx-auto px-4 py-12 relative">
+        <div className="grid lg:grid-cols-2 gap-16 items-center min-h-[48vh]">
           {/* Text Content */}
           <div className="text-center lg:text-right space-y-8">
             {/* Badge */}
@@ -96,15 +71,6 @@ const HeroSection: React.FC = () => {
                   <ArrowLeft className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </span>
               </Link>
-              
-              <button onClick={handleToggleVideo} className="group flex items-center justify-center gap-3 border-2 border-gray-300 hover:border-red-500 text-gray-700 hover:text-red-600 font-bold py-4 px-8 rounded-2xl text-lg transition-all duration-300 hover:scale-105 bg-white/80 backdrop-blur-sm">
-                {isPlaying ? (
-                  <Pause className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                ) : (
-                  <Play className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                )}
-                <span>{isPlaying ? 'أوقف الفيديو' : 'شغّل الفيديو'}</span>
-              </button>
             </div>
 
             {/* Trust Indicators */}
@@ -124,25 +90,19 @@ const HeroSection: React.FC = () => {
             </div>
           </div>
 
-          {/* Hero Media (Video) */}
+          {/* Hero Media (Image) */}
           <div className="relative">
             <div className="relative z-10">
-              {/* Main Video */}
+              {/* Main Image */}
               <div className="relative group">
-                <video
-                  ref={videoRef}
-                  className="w-full h-96 lg:h-[500px] object-cover rounded-3xl shadow-2xl transform group-hover:scale-105 transition-transform duration-500"
-                  poster="/images/hero-poster.svg"
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="metadata"
-                  aria-label="فيديو برجر في الهيرو"
-                >
-                  <source src="/videos/hero.webm" type="video/webm" />
-                  <source src="/videos/hero.mp4" type="video/mp4" />
-                </video>
+                <img
+                  src="/images/hero-poster.svg"
+                  alt="أشهى برجر في بورتسودان"
+                  className="w-full h-[48vh] lg:h-[56vh] object-cover rounded-3xl shadow-2xl transform group-hover:scale-105 transition-transform duration-500"
+                  loading="eager"
+                  decoding="async"
+                  fetchPriority="high"
+                />
                 
                 {/* Floating Elements */}
                 <div className="absolute -top-6 -right-6 bg-white rounded-2xl p-4 shadow-xl animate-float">
@@ -173,8 +133,7 @@ const HeroSection: React.FC = () => {
                     </div>
                   </div>
                 </div>
-
-                {/* Video auto-plays; no overlay button needed */}
+                {/* Static image hero for optimal LCP */}
               </div>
             </div>
 
